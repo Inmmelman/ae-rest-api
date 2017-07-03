@@ -1,10 +1,11 @@
 Run commands:
 - composer install
+- php artisan key:generate
 - php artisan migrate
 - php db:seed
 - php artisan serve
 
-Open 127.0.0.1:8000
+Open http://127.0.0.1:8000/
 
 
 REST API Endpoints docs
