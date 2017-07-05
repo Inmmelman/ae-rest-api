@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\DiscountResolver\VoucherDiscountResolver;
+use App\Helpers\ProductPriceResolverHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class Products extends Model
@@ -43,28 +45,11 @@ class Products extends Model
 	 * Calc discount price of product
 	 * @return int|mixed
 	 */
-	//TODO: move in service with logic to calc discounts
 	public function getPriceWithDiscounts()
 	{
-		$price = 0;
 		$vouchers = $this->vouchers()->where('to', '>=', date('Y-m-d') . ' 00:00:00')->get();
-		if ($this->hasDiscounts()) {
-			$totalDiscount = 0;
-			foreach ($vouchers as $voucher) {
-				$discounts = $voucher->discount()->get()->all();
-				foreach ($discounts as $discount) {
-					$totalDiscount += $discount->getAttribute('amount');
-				}
-			}
-			if ($totalDiscount > 60) {
-				$totalDiscount = 60;
-			}
-
-			$currentPrice = $this->getAttribute('price');
-			$price = $currentPrice - (($currentPrice * $totalDiscount) / 100);
-		}
-
-		return $price;
+		$voucherResolver = new VoucherDiscountResolver($vouchers);
+		return ProductPriceResolverHelper::calcPrice($this, $voucherResolver);
 	}
 
 	/**

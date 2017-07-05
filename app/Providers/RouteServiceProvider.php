@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\DiscountTier;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -25,7 +25,6 @@ class RouteServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		//
-
 		parent::boot();
 		Route::model('discount_tier', DiscountTier::class);
 	}
