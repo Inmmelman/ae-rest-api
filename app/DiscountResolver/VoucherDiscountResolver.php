@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class VoucherDiscountResolver implements DiscountResolverInterface{
 	
+	const MAX_TOTAL_DISCOUNT = 60;
 	/**
 	 * @var Collection
 	 */
@@ -37,8 +38,8 @@ class VoucherDiscountResolver implements DiscountResolverInterface{
 					$totalDiscount += $discount->getAttribute('amount');
 				}
 			}
-			if ($totalDiscount > 60) {
-				$totalDiscount = 60;
+			if ($totalDiscount > self::MAX_TOTAL_DISCOUNT) {
+				$totalDiscount = self::MAX_TOTAL_DISCOUNT;
 			}
 			
 			$price = $productPrice - (($productPrice * $totalDiscount) / 100);
